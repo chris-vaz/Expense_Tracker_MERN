@@ -1,0 +1,11 @@
+/* Stylesheet for the graph page (Additional) */
+.absolute{
+    position:absolute;
+    margin-left:0;
+    margin-right:0;
+    left:0;
+    right:0;
+    /* left:42%; */
+    /* right:60%; */
+    top:32%;
+}
