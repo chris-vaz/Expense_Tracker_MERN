@@ -1,4 +1,7 @@
 import React from 'react'
+import '../styles/liststyle.css'
+import 'boxicons'
+
 
 const obj=[
     {
@@ -21,8 +24,9 @@ const obj=[
 const Transaction = ({category}) =>{
     if(!category) return null;
     return(
-        <div className="item flex justify-center bg-gray-50 py-2 rounded-r">
-            <span className="rounded-md block w-full">Savings</span>
+        <div style={{borderRight:`8px solid ${category.color}`}} className="item flex justify-center bg-[#F3F3F3] py-2 rounded-r w-3/5 mx-auto">
+            <button className="px-3"><box-icon name='trash' animation='tada-hover' color={category.color} ></box-icon></button>
+            <span className="rounded-md block w-full">{category.name}</span>
         </div>
     )
 }
