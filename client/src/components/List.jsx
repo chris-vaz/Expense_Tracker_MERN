@@ -1,44 +1,41 @@
 import React from 'react'
-import '../styles/liststyle.css'
-import 'boxicons'
+import 'boxicons';
+import {default as api} from '../store/apiSlice';
 
+export default function List() {
+    const { data, isFetching , isSuccess, isError } = api.useGetLabelsQuery()
+    const [deleteTransaction] = api.useDeleteTransactionMutation()
+    let Transactions;
 
-const obj=[
-    {
-        name:'Savings',
-        color:'rgb(255, 99, 132)',
-        
-    },
-    {
-        name:'Investment',
-        color:'rgb(255, 205, 86)',
-        
-    },
-    {
-        name:'Expense',
-        color:'rgb(54, 162, 235)',
-        
+    
+    const handlerClick = (e) => {
+        if(!e.target.dataset.id) return 0;
+        deleteTransaction({ _id : e.target.dataset.id })
     }
-] 
 
-const Transaction = ({category}) =>{
-    if(!category) return null;
-    return(
-        <div style={{borderRight:`8px solid ${category.color}`}} className="item flex justify-center bg-[#F3F3F3] py-2 rounded-r w-3/5 mx-auto">
-            <button className="px-3"><box-icon name='trash' animation='tada-hover' color={category.color} ></box-icon></button>
-            <span className="rounded-md block w-full">{category.name}</span>
-        </div>
-    )
-}
+    if(isFetching){
+        Transactions = <div>Fetching</div>;
+    }else if(isSuccess){
+        Transactions = data.map((v, i) => <Transaction key={i} category={v} handler={handlerClick} ></Transaction>);
+    }else if(isError){
+        Transactions = <div>Error</div>
+    }
 
-const List = () => {
 
     return (
         <div className="flex flex-col py-6 gap-3">
-            <h1 className="py-4 text-md font-bold text-xl">History</h1>
-            {obj.map((v,i)=><Transaction key={i} category={v}/>)}
+            <h1 className='py-4 font-bold text-xl'>History</h1>
+            {Transactions}
         </div>
     )
 }
 
-export default List
+function Transaction({ category, handler }){
+    if(!category) return null;
+    return (
+        <div className="py-4 item flex justify-center bg-gray-50 rounded-r" style={{ borderRight : `8px solid ${category.color ??  "#e5e5e5"}`}}>
+            <button className='px-3' onClick={handler}><box-icon data-id={category._id ?? ''}  color={category.color ??  "#e5e5e5"} size="15px" name="trash" ></box-icon></button>            
+            <span className='block w-full'>{category.name ?? ''}</span>
+        </div>
+    )
+}

@@ -1,52 +1,46 @@
 import React from 'react'
-import { Chart,ArcElement } from 'chart.js'
-import {Doughnut} from 'react-chartjs-2'
+import { Doughnut } from 'react-chartjs-2';
+import {Chart, ArcElement} from 'chart.js'
+import Labels from './Labels';
+import { chart_Data, getTotal } from '../helper/helper'
+import {default as api} from '../store/apiSlice';
 import '../styles/graphstyle.css'
-
 
 Chart.register(ArcElement);
 
-const change ={
-    data:{
-        datasets: [{
+export default function Graph() {
 
-            data: [300, 50, 100],
-            backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 205, 86)'
-        ],
-        hoverOffset: 4,
-        borderRadius:25,
-        spacing:5,
-        hoverBorderColor:'rgb(255, 255, 255)'
-        }]
-    },
-    options:{
-        cutout:120
+    const { data, isFetching , isSuccess, isError } = api.useGetLabelsQuery()
+    let graphData;
+
+    
+
+    if(isFetching){
+        graphData = <div>Fetching</div>;
+    }else if(isSuccess){
+        graphData = <Doughnut {...chart_Data(data)}></Doughnut>;
+    }else if(isError){
+        graphData = <div>Error</div>
     }
-}
 
-const Graph = () => {
+
     return (
-        <div>
-            <div className="flex justify-center max-w-xs mx-auto">
-                <div className="item">
-                    <div className="chart relative max-w-xs">
-                        <Doughnut {...change}/>
-                        <div className="absolute">
-                        <h3 className=' mt-4 text-center font-bold title'>Total</h3>
-                        <p className='absolute2 font-bold mt-3 text-center block text-3xl text-emerald-500'>$(0)</p>
-                        </div>
+        <div className="flex justify-content max-w-xs mx-auto">
+            <div className="item">
+                <div className="chart relative">
+                    {graphData}
+                    <div class='absoluteext'>
+                    <h3 className='mb-4 font-bold title'>Total
+                        <span className='block text-3xl text-emerald-400'>${getTotal(data) ?? 0}</span>
+                    </h3>
                     </div>
+                </div>   
 
-                    <div className="flex flex-col py-10 gap-4">
-                        {/* Labels */}
-                    </div>
-                </div>
+                <div className="flex flex-col py-10 gap-4">
+                    {/* Labels */}
+                    {/* <Labels/> */}
+                </div> 
             </div>
         </div>
     )
 }
-
-export default Graph

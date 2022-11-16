@@ -1,50 +1,44 @@
 import React from 'react'
-import '../styles/labelstyle.css'
 import {useForm} from 'react-hook-form'
-import List from './List';
+import List from './List'
+import {default as api} from '../store/apiSlice'
 
-
-// Register Function to register input text-boxes
-// handleSubmit to handle submitting data to the form
-// resetField to reset the value of the text-boxes
-
-const Form = () => {
-
+export default function Form(){
     const {register,handleSubmit,resetField}=useForm();
+    const [addTransaction]=api.useAddTransactionMutation();
 
-    const onSubmit=(data)=>{
-        console.log(data);
+    const onSubmit=async(data)=>{
+        if(!data) return {};
+        await addTransaction(data).unwrap();
+        resetField('name');
+        resetField('amount')
     }
-
     return (
-        <div className="text-center">
-        <div className="form max-w-sm mx-auto w-96">
-            <h1 className="text-center font-bold pb-4 text-xl">Transaction</h1>
-        </div>
+        <div className="form max-w-sm mx-auto w-96 text-center">
 
-        <form id="form" onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid gap-4">
-                <div className="input-group mx-auto">
-                    <input type="text" {...register('name')} placeholder='Salary, House Rent, SIP' className='mt-5 block px-3 py-2 bg-white border border-slate-200 rounded-md text-sm drop-shadow-xl placeholder-slate-400 form-input ' />
-                </div>
-                <select {...register('type')} className='form-input px-3 py-2 bg-white border border-slate-200 rounded-md text-sm drop-shadow-xl placeholder-slate-400 form-input w-1/3 mt-4 mx-auto'>
-                    <option value="Investment" defaultValue>Investment</option>
-                    <option value="Expenses">Expenses</option>
-                    <option value="Savings">Savings</option>
-                </select>
-                <div className="input-group mx-auto">
-                    <input {...register('amount')} type="text" placeholder='Amount' className='mt-5 block px-3 py-2 bg-white border border-slate-200 rounded-md text-sm drop-shadow-xl placeholder-slate-400 form-input ' />
-                </div>
-                <div className="submit-btn text-center">
-                    <button className='rounded-lg w-2/5 mt-5 border py-2 text-white bg-blue-900 hover:bg-[#070056]'>Make Transaction</button>
-                </div>
-            </div>
-        </form>
+            <h1 className='font-bold pb-4 text-xl'>Transaction</h1>
 
+            <form id='form' onSubmit={handleSubmit(onSubmit)}>
+                <div className="grid gap-4">
+                    <div className="input-group">
+                        <input type="text" {...register('name')} placeholder='Salary, House Rent, SIP' className='border-2 border-grey-100 form-input drop-shadow-xl py-5 px-5 rounded-lg w-4/5' />
+                    </div>
+                    <select className='border-2 border-grey-100 form-input drop-shadow-xl py-5 px-5 rounded-lg w-4/5 form-input mx-auto' {...register('type')}>
+                        <option value="Investment" defaultValue>Investment</option>
+                        <option value="Expense">Expense</option>
+                        <option value="Savings">Savings</option>
+                    </select>
+                    <h1 className='font-bold text-xl'>Amount</h1>
+                    <div className="input-group">
+                        <input type="text" {...register('amount')} placeholder='Amount' className='form-input border-2 border-grey-100 form-input drop-shadow-xl py-5 px-5 rounded-lg w-4/5' />
+                    </div>
+                    <div className="submit-btn">
+                        <button className='mt-6 border py-5 text-white bg-[#1E293B] w-4/5 rounded-lg'>Make Transaction</button>
+                    </div>
+                </div>
+            </form>
 
-        <List/>
+            <List/>
         </div>
     )
 }
-
-export default Form

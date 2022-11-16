@@ -1,0 +1,9 @@
+*{
+    margin:0px;
+    padding:0px;
+    background-color:#F3F3F3;
+}
+.navbar{
+    display:flex;
+    background-color:#1D1628;
+}
