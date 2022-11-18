@@ -1,0 +1,14 @@
+.makeTransaction{
+    background-color:#34D35E;
+    border-radius:8px;
+    border:2px solid #34D35E;
+    transition: 0.2s ease-in-out;
+}
+.makeTransaction:hover{
+    background-color:black;
+    border:2px solid #34D35E;
+    border-radius:8px;
+}
+body{
+    background-color:#1D1628;
+}

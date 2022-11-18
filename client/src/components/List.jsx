@@ -1,23 +1,23 @@
 import React from 'react'
 import 'boxicons';
-import {default as api} from '../store/apiSlice';
+import { default as api } from '../store/apiSlice';
 
 export default function List() {
-    const { data, isFetching , isSuccess, isError } = api.useGetLabelsQuery()
+    const { data, isFetching, isSuccess, isError } = api.useGetLabelsQuery()
     const [deleteTransaction] = api.useDeleteTransactionMutation()
     let Transactions;
 
-    
+
     const handlerClick = (e) => {
-        if(!e.target.dataset.id) return 0;
-        deleteTransaction({ _id : e.target.dataset.id })
+        if (!e.target.dataset.id) return 0;
+        deleteTransaction({ _id: e.target.dataset.id })
     }
 
-    if(isFetching){
+    if (isFetching) {
         Transactions = <div>Fetching</div>;
-    }else if(isSuccess){
+    } else if (isSuccess) {
         Transactions = data.map((v, i) => <Transaction key={i} category={v} handler={handlerClick} ></Transaction>);
-    }else if(isError){
+    } else if (isError) {
         Transactions = <div>Error</div>
     }
 
@@ -30,11 +30,11 @@ export default function List() {
     )
 }
 
-function Transaction({ category, handler }){
-    if(!category) return null;
+function Transaction({ category, handler }) {
+    if (!category) return null;
     return (
-        <div className="py-4 item flex justify-center bg-gray-50 rounded-r" style={{ borderRight : `8px solid ${category.color ??  "#e5e5e5"}`}}>
-            <button className='px-3' onClick={handler}><box-icon data-id={category._id ?? ''}  color={category.color ??  "#e5e5e5"} size="15px" name="trash" ></box-icon></button>            
+        <div className="text-[#FFFFFF] bg-[#000000] py-4 item flex justify-center rounded-r" style={{ borderRight: `8px solid ${category.color ?? "#e5e5e5"}` }}>
+            <button className='px-3' onClick={handler}><box-icon data-id={category._id ?? ''} color={category.color ?? "#e5e5e5"} size="27px" name="trash" animation='tada-hover' ></box-icon></button>
             <span className='block w-full'>{category.name ?? ''}</span>
         </div>
     )

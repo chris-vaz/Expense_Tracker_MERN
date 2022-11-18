@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import './styles/landingPageStyles.css'
 import Navbar from './components/Navbar'
+import LPContent from './components/LPContent'
 
 
 function LandingPage() {
     return (
         <div>
             <Navbar/>
-            <h1>This is the landing page</h1>
+            <LPContent/>
         </div>
     )
 }
