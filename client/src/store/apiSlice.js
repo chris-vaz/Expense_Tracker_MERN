@@ -11,6 +11,16 @@ const baseURI = 'http://localhost:8080';
 
 // builder parameter is used to build a query
 
+// When you call createApi, it automatically generates and returns an API service "slice" object 
+// structure containing Redux logic you can use to interact with the endpoints you defined. 
+
+// This slice object includes a reducer to manage cached data, 
+// a middleware to manage cache lifetimes and subscriptions, and selectors and thunks for each endpoint. 
+
+// If you imported createApi from the React-specific entry point, 
+// it also includes auto-generated React hooks for use in your components.
+
+
 export const apiSlice = createApi({
     baseQuery : fetchBaseQuery({ baseUrl : baseURI}),
     endpoints : builder => ({
@@ -38,7 +48,10 @@ export const apiSlice = createApi({
             }),
             invalidatesTags: ['transaction']
         }),
+        // Used by mutation endpoints. Determines which cached data should be either re-fetched or removed from the cache. 
+        // Expects the same shapes as providesTags.
 
+        
         // delete record
         deleteTransaction : builder.mutation({
             query : recordId => ({
